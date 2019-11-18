@@ -125,7 +125,7 @@ int knn (int k,int etiquetas, int tam_col, int tam_fil){ //valores knn
         return etiqueta;    
      }
 
-
+//INICIO DE CNN
 void cnn (int etiquetas, int tam_col, int tam_fil){
   int i;
   int j;
