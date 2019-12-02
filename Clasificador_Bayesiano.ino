@@ -1,6 +1,6 @@
 /* 
  *  UTN-FICA-CIERCOM
- *  Nombre: Chandi Bryan-Angel Velasco-Santiago Bolaños-Luis Farinango
+ *  Nombre: Chandi Bryan
  *  CLASIFICADOR BAYESIANO
  *  N° de etiquetas
  *  N° de filas y columnas
