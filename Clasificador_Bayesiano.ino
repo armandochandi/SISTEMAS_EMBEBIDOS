@@ -2,64 +2,125 @@
  *  UTN-FICA-CIERCOM
  *  Nombre: Chandi Bryan-Angel Velasco-Santiago Bolaños-Luis Farinango
  *  CLASIFICADOR BAYESIANO
-   N° de etiquetas
-   N° de filas y columnas
-   tags=1,2,3
-   P(1)= Sumatoria de elementos tag1 / Total filas
-   P(2)= Sumatoria de elementos tag2 / Total filas
-   P(3)= Sumatoria de elementos tag3 / Total filas
-   P(x)= Sumatoria de los elementos en circunferencia  / numero de filas
-        Circunferencia:
-          Distancia entre la nueva instancia y base de datos
-          Encontrar distancia mayor y dividir para las distancia
-          Definir radio de circunferencia (0-1)
-   P(x|1)=Elementos en circunferencia con etiqueta 1 / Etiquetas 1
-   P(x|2)=Elementos en circunferencia con etiqueta 2 / Etiquetas 2
-   P(x|3)=Elementos en circunferencia con etiqueta 3 / Etiquetas 3
-   P(1|x)=P(1)*P(x|1)/P(x)
-   P(2|x)=P(2)*P(x|2)/P(x)
-   P(3|x)=P(3)*P(x|3)/P(x)
-   Encontrar probabilidad mayor
+ *  N° de etiquetas
+ *  N° de filas y columnas
 */
-#include"matriz_entrenamiento.h" //Llamar matriz de entrenamiento
-
-char respuesta;
-float datos_prueba[5] = {6.9, 3.1, 5.1, 2.3, 3};
+#include "matriz_entrenamiento.h"
+#include "ListLib.h"
+  // Crear una nueva lista
+  List<int> list;
+/*
+ * CLASIFICADOR BAYESIANO
+ * saber cuantas etiquetas tiene el conjunto de datos
+ * el # filas y de columnas
+ * 
+ * etiquetas=1,2,3
+ * 
+ * P(1)= Sumatorias de todos lo elementos con etiqueta 1 dividimos para el total de filas
+ * P(2)= Sumatorias de todos lo elementos con etiqueta 2 dividimos para el total de filas
+ * P(3)= Sumatorias de todos lo elementos con etiqueta 3 dividimos para el total de filas
+ * 
+ * P(x)= Sumatoria de los elementos dentro de la circunferencia y dividr para el total de filas
+ *              * Encontrar la circunferencia:
+ *                            -> distancia entre la nueva instancia y la base de datos
+ *                            -> encuentro la mayor distancia y divido para el resto de las             
+ *                               distancia encontradas
+ *                            -> Defino el radio de la circunferencia (0,1)   
+ *                            -> Seleccionar las filas que se encuentren dentro de la circunferencia 
+ *                            
+ * P(x/1)= Sumatoria de todos elementos que se encuentran dentro de la circunferencia                            
+ *         con etiqueta 1 y divido para todas las instancias de la misma etiqueta
+ *
+ *P(x/2)=  Sumatoria de todos elementos que se encuentran dentro de la circunferencia                            
+ *         con etiqueta 2 y divido para todas las instancias de la misma etiqueta
+ *        
+ *P(x/3)= Sumatoria de todos elementos que se encuentran dentro de la circunferencia                            
+ *        con etiqueta 3 y divido para todas las instancias de la misma etiqueta
+ */
+ float datos_prueba[5]={6,3,4.8,1.8,3};
 void setup() {
   Serial.begin(9600);
-  bayes(3, 120, 5, 0.2);
 }
 
 void loop() {
+  bayesiano(3,5,120,0.2);
+  delay(300);
 }
 
-void bayes(int tags, int filas, int columnas, float r) {
-  float sum1, sum2, sum3, sumatoria = 0, distancia_menor = 3000, distancia;
-  int cont1 = 0, cont2 = 0, cont3 = 0, drain = 0, source = 0, tag;
+void bayesiano (int etiquetas, int columnas, int filas, float r){
+float prob[4][etiquetas];
 
-  float prob[3][tags];
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < tags; j++) {
-      prob[i][j] = 0;
-      if (i == 0)
-        prob[i][j] = j + 1;
+/*
+  |1     |2     |3     |
+  |sum1  |sum2  |sum3  | 40,40,40
+  |P(x/1)|P(x/2)|P(x/3)| 0.12,0.18,0.75
+  |P(1/x)|P(2/x)|P(3/x)| 
+ */ 
+ float p_x;
+ float resultado; 
+ float aux=0.0;
+ int i=0;
+ int j=0;
+ int k=0;
+ int t=0;
+ float distancia;
+ float sumatoria=0.0;
+ float dist_mayor=0.01;
+ float normalizador;
+// encerar matriz y asignar etiqueta a la fila 0
+ for(i=0;i<4;i++){
+  for(j=0;j<etiquetas;j++){
+      prob[i][j]=0;
+      if(i==0)
+      prob[i][j]=j+1;
     }
   }
-  for (int t = 0; t < tags; t++) {
-    for (int i = 0; i < filas; i++) {
-      if (matriz[i][columnas - 1] == t+1)
+for(t=0;t<etiquetas;t++){
+    for(i=0;i<filas;i++){
+        if(matriz[i][columnas-1]==t+1)
         prob[1][t]++;
-        prob[2][t]=prob[1][t]/filas;
+      }
+  }
+  for(i=0;i<filas;i++){
+    for(j=0;j<columnas;j++){
+        sumatoria=sumatoria+pow(matriz[i][j]-datos_prueba[j],2);
+      }
+     distancia=sqrt(sumatoria);
+     sumatoria=0;
+     if(distancia>dist_mayor)
+        dist_mayor=distancia;
+        //Serial.println(dist_mayor);
+    }
+    distancia=0;
+     for(i=0;i<filas;i++){
+       for(j=0;j<columnas;j++){
+          sumatoria=sumatoria+pow(matriz[i][j]-datos_prueba[j],2);
+       }
+       distancia=sqrt(sumatoria);
+       normalizador=distancia/dist_mayor;
+       sumatoria=0;
+       if(normalizador<r){
+         list.Add(i);
+        }
+     }
+      for(i=0;i<list.Count();i++){
+           Serial.println(list[i]);
+     }
+ for(i=0;i<list.Count();i++){
+  for(j=0;j<etiquetas;j++){
+    if(matriz [list[i]][columnas-1]==prob[0][j])
+    prob[2][j]++;
     }
   }
-
-  Serial.println("PROBABILIDADES DE ETIQUETAS");
-  for (int i = 0; i < 3; i++) {
-    for (int j = 0; j < tags; j++) {
-      Serial.print(prob[i][j], 1);
-      Serial.print(" ");
+    p_x=list.Count()/float (filas);
+    for(k=0;k<etiquetas;k++){
+      prob[3][k]=((prob[1][k]/filas)*(prob[2][k]/prob[1][k]))/p_x;
+      }
+       for(k=0;k<etiquetas;k++){
+    //Serial.println(prob[3][k]);
+    if(prob[3][k]>aux)
+    resultado=int(prob[0][k]);
+    aux=prob[3][k];
     }
-    Serial.println(" ");
-  }
-
+    Serial.println(resultado);
 }
