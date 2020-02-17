@@ -1,0 +1,18 @@
+\BOOKMARK [1][-]{section.1}{Introduci\363n}{}% 1
+\BOOKMARK [1][-]{section.2}{Dise\361o del sistema}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Placa del sistema}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Conexiones}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Diagrama de conexi\363n }{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Desarrollo}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{Diagrama de Bloques del sistema}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{Algoritmo Peceptr\363n}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.3}{Selecci\363n de los sensores para toma de datos}{section.3}% 9
+\BOOKMARK [1][-]{section.4}{Estimaci\363n de calidad del aire con algoritmo PERCEPTR\323N DE UNA CAPA }{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{Captura de datos}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Procedimientos en Rstudio}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{An\341lisis de muestras con algoritmo Perceptr\363n desde Arduino IDE}{section.4}% 13
+\BOOKMARK [1][-]{section.5}{Interfaz}{}% 14
+\BOOKMARK [1][-]{section.6}{Conclusiones y Recomendaciones}{}% 15
+\BOOKMARK [2][-]{subsection.6.1}{Conclusiones}{section.6}% 16
+\BOOKMARK [2][-]{subsection.6.2}{Recomendaciones}{section.6}% 17
+\BOOKMARK [1][-]{section.7}{Anexos}{}% 18
